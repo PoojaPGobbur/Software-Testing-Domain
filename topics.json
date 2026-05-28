@@ -265,3 +265,26 @@
     ]
   }
 ]
+{
+  "topics": [
+    {
+      "title": "Mutable vs Immutable",
+      "level": "basic",
+      "badge": "must know",
+      "keywords": "python mutable immutable",
+      "definition": "Mutable objects can change after creation.",
+      "code": "my_list = [1,2]\nmy_list.append(3)",
+      "tip": "Tuple immutable, list mutable."
+    },
+
+    {
+      "title": "Decorators",
+      "level": "advanced",
+      "badge": "QA essential",
+      "keywords": "python decorators wrapper",
+      "definition": "Decorators modify function behavior.",
+      "code": "def decorator(func):\n  pass",
+      "tip": "Explain wrapper functions clearly."
+    }
+  ]
+}
