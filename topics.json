@@ -1,0 +1,267 @@
+[
+  {
+    "id": "python",
+    "subject": "Python",
+    "icon": "🐍",
+    "color": "#7f77dd",
+    "description": "Core Python concepts for QA Automation interviews",
+    "sections": [
+      {
+        "label": "Basics",
+        "topics": [
+          {
+            "title": "Variables & Data Types",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "int float str bool none type isinstance dynamic typing",
+            "definition": "A variable is a named container storing a value in memory. Python is dynamically typed — no type declaration needed; Python infers type at runtime.",
+            "code": "age       = 25         # int\npi        = 3.14       # float\nname      = \"Pooja\"   # str (immutable)\nis_active = True      # bool\ndata      = None      # NoneType\n\n# Inspect type\nprint(type(age))               # <class 'int'>\nprint(isinstance(name, str))   # True\n\n# is vs == (interview classic)\na = [1, 2]; b = [1, 2]\nprint(a == b)   # True  — same value\nprint(a is b)   # False — different objects in memory",
+            "tip": "Python uses dynamic typing — type is determined at runtime. Use isinstance() over type() because it respects inheritance. For None checks always use 'is None', never '== None'."
+          },
+          {
+            "title": "Mutable vs Immutable",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "mutable immutable list dict string tuple change memory default arg trap",
+            "definition": "Mutable objects can be changed in-place after creation. Immutable objects create a new object on any change. This directly affects how Python passes data to functions.",
+            "code": "# Immutable: int, float, str, bool, tuple\ns = \"hello\"\n# s[0] = \"H\"  →  TypeError!\n\n# Mutable: list, dict, set\nlst = [1, 2, 3]\nlst[0] = 99   # works fine\n\n# ⚠️ Famous mutable default arg trap\ndef add_item(item, lst=[]):   # WRONG\n    lst.append(item)\n    return lst\n\nadd_item(\"a\")   # [\"a\"]\nadd_item(\"b\")   # [\"a\", \"b\"]  ← bug! shared list\n\n# Correct — use None as default\ndef add_item(item, lst=None):\n    if lst is None: lst = []\n    lst.append(item)\n    return lst",
+            "tip": "Never use a mutable object (list, dict) as a default argument — it is shared across all calls. Use None as the default and create a new list inside the function."
+          },
+          {
+            "title": "Control Flow — if / for / while",
+            "level": "basic",
+            "badge": "core",
+            "keywords": "if elif else for while range enumerate zip ternary break continue loop",
+            "definition": "Python control flow uses indentation instead of braces. Key tools: enumerate() for index+value, zip() for parallel iteration, range(start,stop,step) for number sequences.",
+            "code": "# if-elif-else\nscore = 75\nif   score >= 90: print(\"A\")\nelif score >= 60: print(\"B\")   # ← this runs\nelse:            print(\"Fail\")\n\n# Ternary one-liner\nstatus = \"pass\" if score > 60 else \"fail\"\n\n# enumerate — index + value together\nfor i, val in enumerate([\"a\", \"b\", \"c\"]):\n    print(i, val)   # 0 a | 1 b | 2 c\n\n# zip — iterate two lists in parallel\nnames   = [\"login\", \"signup\"]\nresults = [\"pass\",  \"fail\"]\nfor n, r in zip(names, results):\n    print(f\"{n}: {r}\")\n\n# range(start, stop, step)\nlist(range(0, 10, 2))   # [0, 2, 4, 6, 8]",
+            "tip": "enumerate(), zip(), and range(start, stop, step) come up constantly in coding rounds. Know all three cold."
+          }
+        ]
+      },
+      {
+        "label": "Data Structures",
+        "topics": [
+          {
+            "title": "List",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "list append pop remove sort slice index comprehension ordered mutable duplicate",
+            "definition": "Ordered, mutable, indexed collection. Allows duplicates. Most commonly used Python data structure.",
+            "code": "fruits = [\"apple\", \"banana\", \"cherry\"]\n\n# Indexing & slicing\nfruits[0]        # \"apple\"\nfruits[-1]       # \"cherry\" (last)\nfruits[0:2]      # [\"apple\", \"banana\"]\nfruits[::-1]     # reversed list\n\n# Common methods\nfruits.append(\"mango\")    # add to end\nfruits.insert(1, \"grape\") # add at index\nfruits.remove(\"banana\")   # remove by value\nfruits.pop()              # remove & return last\nfruits.sort()             # in-place sort\nsorted(fruits)            # returns new sorted list\n\n# List comprehension (interview favourite)\nsquares = [x**2 for x in range(5)]   # [0, 1, 4, 9, 16]\nevens   = [x for x in range(10) if x % 2 == 0]",
+            "tip": "sort() modifies in place; sorted() returns a new list — that distinction often comes up. List comprehensions are more Pythonic and faster than equivalent for-loops."
+          },
+          {
+            "title": "Dictionary",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "dictionary dict key value get update items keys values KeyError json insertion-ordered",
+            "definition": "Insertion-ordered (Python 3.7+), mutable key-value pairs. Keys must be unique and immutable. O(1) average lookup time.",
+            "code": "user = {\"name\": \"Pooja\", \"age\": 28, \"role\": \"QA\"}\n\n# Safe access with .get()\nuser[\"name\"]            # \"Pooja\"\nuser.get(\"salary\", 0)   # 0 — no KeyError\n\n# Iteration\nfor key, val in user.items():\n    print(key, val)\n\n# Merge (Python 3.9+)\ndefaults = {\"env\": \"staging\"}\nconfig   = defaults | {\"env\": \"prod\"}   # {\"env\":\"prod\"}\n\n# Dict comprehension\nsquared = {x: x**2 for x in range(5)}\n\n# defaultdict — auto-create missing keys\nfrom collections import defaultdict\ndd = defaultdict(list)\ndd[\"tests\"].append(\"login\")  # no KeyError",
+            "tip": "Always use .get(key, default) instead of direct bracket access to avoid KeyError. In QA, dicts are ideal for test parameter maps — each scenario's inputs stored by name."
+          },
+          {
+            "title": "Set",
+            "level": "intermediate",
+            "badge": "useful",
+            "keywords": "set unique intersection union difference membership O(1) frozenset deduplicate",
+            "definition": "Unordered, mutable, unique elements only. O(1) membership check. Supports mathematical set operations like union, intersection, difference.",
+            "code": "a = {1, 2, 3, 3}   # {1, 2, 3} — dup removed\nb = {3, 4, 5}\n\na | b   # union:         {1,2,3,4,5}\na & b   # intersection:  {3}\na - b   # difference:    {1,2} (in a, not b)\na ^ b   # symmetric diff:{1,2,4,5}\n\n# O(1) membership check\n3 in a   # True — faster than list check\n\n# Deduplicate a list\nnums   = [1, 2, 2, 3, 3]\nunique = list(set(nums))   # [1, 2, 3]\n\n# QA use: find missing test IDs\nexpected = {\"TC01\", \"TC02\", \"TC03\"}\nran      = {\"TC01\", \"TC03\"}\nmissing  = expected - ran   # {\"TC02\"}",
+            "tip": "Sets give O(1) membership check vs O(n) for lists. In QA I use set difference to find which test cases ran vs expected — one clean line."
+          },
+          {
+            "title": "Tuple",
+            "level": "basic",
+            "badge": "core",
+            "keywords": "tuple immutable ordered hashable unpack named coordinates swap",
+            "definition": "Ordered, immutable collection. Faster than lists. Can be used as dictionary keys (lists cannot). Best for fixed data like coordinates, config, DB rows.",
+            "code": "coords = (10.5, 20.3)\nsingle = (42,)        # trailing comma required for single element\n\n# Unpacking — very common\nx, y = coords\nprint(x)   # 10.5\n\n# Pythonic variable swap — no temp variable!\na, b = 1, 2\na, b = b, a   # a=2, b=1\n\n# Named tuple — readable alternative\nfrom collections import namedtuple\nPoint = namedtuple(\"Point\", [\"x\", \"y\"])\np = Point(3, 4)\nprint(p.x, p.y)   # 3  4",
+            "tip": "Tuple vs list — use tuple when data should not change. Tuples are hashable so they can be dict keys; lists cannot. a, b = b, a uses tuple packing/unpacking to swap without a temp variable."
+          }
+        ]
+      },
+      {
+        "label": "OOP",
+        "topics": [
+          {
+            "title": "Class & Object",
+            "level": "intermediate",
+            "badge": "must know",
+            "keywords": "class object init self constructor instance method attribute blueprint POM page object model classmethod staticmethod",
+            "definition": "A class is a blueprint. An object is an instance of that blueprint. __init__ is the constructor — runs when object is created. self refers to the current instance.",
+            "code": "class LoginPage:\n    url = \"/login\"   # class variable (shared by all instances)\n\n    def __init__(self, driver):\n        self.driver = driver   # instance variable\n\n    def login(self, username, password):\n        self.driver.find(\"#user\").send_keys(username)\n        self.driver.find(\"#pass\").send_keys(password)\n        self.driver.find(\"#btn\").click()\n\n    @classmethod\n    def get_url(cls):         # access class variable\n        return cls.url\n\n    @staticmethod\n    def validate(u):          # no self/cls needed\n        return bool(u)\n\n# Instantiate\npage = LoginPage(driver)\npage.login(\"admin\", \"pass123\")",
+            "tip": "In QA, classes are the foundation of Page Object Model — each page is a class, locators are instance variables, actions are methods. This makes tests readable: login_page.login(user, pass) rather than raw Selenium calls everywhere."
+          },
+          {
+            "title": "Inheritance & super()",
+            "level": "intermediate",
+            "badge": "must know",
+            "keywords": "inheritance super parent child BasePage extends reuse POM override",
+            "definition": "A child class inherits all attributes and methods from a parent class. super() explicitly calls the parent's method. Promotes code reuse — no duplication.",
+            "code": "class BasePage:\n    def __init__(self, driver):\n        self.driver = driver\n\n    def wait_for(self, locator):\n        return self.driver.find(locator)   # shared by all pages\n\n    def screenshot(self, name):\n        self.driver.save_screenshot(name)\n\nclass LoginPage(BasePage):    # inherits BasePage\n    def login(self, u, p):\n        self.wait_for(\"#user\").send_keys(u)   # parent method!\n        self.wait_for(\"#pass\").send_keys(p)\n        self.wait_for(\"#btn\").click()\n\nclass AdminPage(LoginPage):\n    def __init__(self, driver, token):\n        super().__init__(driver)    # call parent __init__\n        self.token = token",
+            "tip": "BasePage holds shared utilities — wait_for_element, take_screenshot, scroll_to. Every page class inherits it, zero duplication. super().__init__() ensures the parent constructor runs and the driver is set up."
+          },
+          {
+            "title": "Decorators",
+            "level": "intermediate",
+            "badge": "must know",
+            "keywords": "decorator wrapper functools wraps retry log timing cross-cutting",
+            "definition": "A function that wraps another function, adding behaviour before or after it runs without modifying the original. Syntax sugar for func = decorator(func).",
+            "code": "import functools, time\n\ndef log_test(func):\n    @functools.wraps(func)   # preserves func name\n    def wrapper(*args, **kwargs):\n        print(f\"START: {func.__name__}\")\n        result = func(*args, **kwargs)\n        print(f\"END:   {func.__name__}\")\n        return result\n    return wrapper\n\n@log_test\ndef test_login():\n    print(\"Logging in...\")\n\n# Decorator with arguments — retry pattern\ndef retry(times=3, delay=1):\n    def decorator(func):\n        @functools.wraps(func)\n        def wrapper(*a, **k):\n            for i in range(times):\n                try: return func(*a, **k)\n                except Exception as e:\n                    if i == times-1: raise\n                    time.sleep(delay)\n        return wrapper\n    return decorator\n\n@retry(times=3, delay=2)\ndef flaky_api_call(): ...",
+            "tip": "Decorators add cross-cutting behaviour — logging, retry, timing — without touching the function. @pytest.fixture and @pytest.mark.parametrize are decorators. Always use @functools.wraps so the decorated function keeps its original name."
+          }
+        ]
+      },
+      {
+        "label": "QA Automation",
+        "topics": [
+          {
+            "title": "pytest — Fixtures & Parametrize",
+            "level": "intermediate",
+            "badge": "QA essential",
+            "keywords": "pytest fixture conftest parametrize scope session function module class yield data driven",
+            "definition": "@pytest.fixture = injectable setup/teardown injected by parameter name. @pytest.mark.parametrize = data-driven testing — run one test with many input sets.",
+            "code": "import pytest\n\n# Session-scoped — browser launches ONCE for all tests\n@pytest.fixture(scope=\"session\")\ndef browser():\n    from playwright.sync_api import sync_playwright\n    with sync_playwright() as p:\n        b = p.chromium.launch(headless=True)\n        yield b      # setup done — test runs here\n        b.close()    # teardown — always runs\n\n# Function-scoped — fresh page per test (default)\n@pytest.fixture\ndef page(browser):\n    p = browser.new_page()\n    yield p\n    p.close()\n\n# Data-driven — 3 test cases from 1 function\n@pytest.mark.parametrize(\"user,pwd,expected\", [\n    (\"admin\",  \"pass123\", \"dashboard\"),\n    (\"user1\",  \"wrong\",   \"error\"),\n    (\"\",       \"\",        \"required\"),\n])\ndef test_login(page, user, pwd, expected):\n    page.goto(\"/login\")\n    page.fill(\"#user\", user)\n    page.fill(\"#pass\", pwd)\n    page.click(\"#submit\")\n    assert expected in page.url",
+            "tip": "Fixture scope is the most important thing to get right: session = browser launches once, function = fresh page per test. Wrong scope = either test pollution or huge slowdown. Default: function for page, session for browser."
+          },
+          {
+            "title": "conftest.py — Shared Fixtures",
+            "level": "intermediate",
+            "badge": "QA essential",
+            "keywords": "conftest shared fixtures automatic discovery injection no import needed",
+            "definition": "Special pytest file — fixtures defined here are automatically available to all tests in the same directory and subdirectories. No import needed in test files.",
+            "code": "# conftest.py — root of test folder\nimport pytest, os\nfrom playwright.sync_api import sync_playwright\n\n@pytest.fixture(scope=\"session\")\ndef browser():\n    with sync_playwright() as p:\n        b = p.chromium.launch(headless=True)\n        yield b\n        b.close()\n\n@pytest.fixture\ndef base_url():\n    return os.getenv(\"BASE_URL\", \"https://staging.example.com\")\n\n@pytest.fixture\ndef test_user():\n    return {\"username\": \"admin\", \"password\": \"pass123\"}\n\n# ── In any test file — NO import needed ──\ndef test_login(browser, base_url, test_user):\n    page = browser.new_page()\n    page.goto(base_url + \"/login\")\n    page.fill(\"#user\", test_user[\"username\"])\n    page.fill(\"#pass\", test_user[\"password\"])",
+            "tip": "conftest.py is pytest's dependency injection. Tests declare what they need by parameter name — pytest resolves and injects. Put all shared fixtures here: browser, base URL, auth tokens, DB connections."
+          },
+          {
+            "title": "API Testing with requests",
+            "level": "intermediate",
+            "badge": "QA essential",
+            "keywords": "requests API GET POST status code json response assert authorization bearer token session",
+            "definition": "Python requests library for HTTP API testing. Always validate: status code, response body fields, and schema structure.",
+            "code": "import requests\n\n# GET with auth header\nresp = requests.get(\n    \"https://api.example.com/users/1\",\n    headers={\"Authorization\": \"Bearer TOKEN\"}\n)\nassert resp.status_code == 200\ndata = resp.json()          # response as dict\nassert data[\"name\"] == \"Pooja\"\n\n# POST with JSON payload\npayload = {\"name\": \"Test User\", \"role\": \"QA\"}\nr = requests.post(\n    \"https://api.example.com/users\",\n    json=payload,           # auto sets Content-Type: JSON\n    headers={\"Authorization\": \"Bearer TOKEN\"}\n)\nassert r.status_code == 201\nassert \"id\" in r.json()\n\n# Session — reuse headers across calls\nsession = requests.Session()\nsession.headers.update({\"Authorization\": \"Bearer TOKEN\"})\nsession.get(\"/users\")\nsession.post(\"/orders\", json={...})",
+            "tip": "Always validate three things: status code, response body field values, and schema structure using jsonschema. Use requests.Session() for multi-step API tests to share auth headers and cookies."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "playwright",
+    "subject": "Playwright",
+    "icon": "🎭",
+    "color": "#4aab8f",
+    "description": "Playwright architecture, locators, and automation patterns",
+    "sections": [
+      {
+        "label": "Architecture",
+        "topics": [
+          {
+            "title": "How Playwright Works",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "playwright architecture CDP WebSocket browser chromium firefox webkit protocol direct no driver",
+            "definition": "Playwright communicates directly with browsers via CDP/WebSocket — a persistent pipe with no HTTP overhead per command. No separate driver binary needed.",
+            "code": "# Layer stack\n# Your test (Python)\n#   ↕ WebSocket (CDP)\n# Browser process (Chromium / Firefox / WebKit)\n\nfrom playwright.sync_api import sync_playwright, expect\n\nwith sync_playwright() as p:\n    browser = p.chromium.launch(headless=False)\n    context = browser.new_context()   # isolated like incognito\n    page    = context.new_page()\n\n    page.goto(\"https://example.com\")\n\n    # Semantic locators — resilient to UI changes\n    page.get_by_label(\"Username\").fill(\"admin\")\n    page.get_by_label(\"Password\").fill(\"pass\")\n    page.get_by_role(\"button\", name=\"Login\").click()\n\n    # Auto-retry assertions — no explicit wait needed\n    expect(page).to_have_url(\"https://example.com/home\")\n    expect(page.get_by_text(\"Welcome\")).to_be_visible()\n\n    browser.close()",
+            "tip": "Playwright auto-waits for elements to be visible, enabled, stable, and not obscured before acting. No WebDriverWait or time.sleep() needed. The trace viewer records every step with DOM snapshots for debugging."
+          },
+          {
+            "title": "Locator Types",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "locator get_by_role get_by_label get_by_text get_by_placeholder get_by_test_id CSS XPath selector",
+            "definition": "Playwright has semantic locators that target elements the way users see them — by role, label, text. These are more resilient than CSS or XPath.",
+            "code": "# Prefer semantic locators (top to bottom priority)\npage.get_by_role(\"button\", name=\"Submit\")    # ARIA role\npage.get_by_label(\"Email address\")           # form label\npage.get_by_placeholder(\"Enter email\")       # placeholder\npage.get_by_text(\"Welcome back\")             # visible text\npage.get_by_alt_text(\"Company logo\")         # img alt\npage.get_by_test_id(\"submit-btn\")            # data-testid\n\n# CSS and XPath (fallback when needed)\npage.locator(\"#submit\")\npage.locator(\".btn-primary\")\npage.locator(\"//button[@type='submit']\")\n\n# Chaining locators\npage.locator(\".modal\").get_by_role(\"button\", name=\"OK\")\n\n# Strict mode — throws if multiple match\npage.locator(\".btn\")   # throws if > 1 element matches",
+            "tip": "Playwright's strict mode throws if a selector matches more than one element — catches bugs Selenium would silently ignore. get_by_role() and get_by_label() survive UI refactors if semantics stay the same."
+          }
+        ]
+      },
+      {
+        "label": "Advanced",
+        "topics": [
+          {
+            "title": "Network Interception & Mocking",
+            "level": "advanced",
+            "badge": "advanced",
+            "keywords": "route intercept mock API network abort fulfill request response",
+            "definition": "Playwright can intercept any network request — mock API responses, block resources, or modify requests. Built-in, no proxy needed.",
+            "code": "# Mock an API endpoint\npage.route(\"**/api/products\", lambda route: route.fulfill(\n    status=200,\n    content_type=\"application/json\",\n    body='[{\"id\": 1, \"name\": \"Mocked Product\"}]'\n))\n\n# Block images to speed up tests\npage.route(\"**/*.{png,jpg,jpeg,gif,svg}\",\n           lambda route: route.abort())\n\n# Intercept and modify request\ndef handle(route, request):\n    headers = {**request.headers, \"X-Test\": \"true\"}\n    route.continue_(headers=headers)\n\npage.route(\"**/api/**\", handle)\n\n# Listen to responses\npage.on(\"response\", lambda r:\n    print(r.status, r.url) if \"/api/\" in r.url else None\n)\n\npage.goto(\"https://shop.example.com\")",
+            "tip": "Route mocking is perfect for testing edge cases without a real backend — 500 errors, empty states, slow responses. Block images and CSS in regression tests to cut run time by 30-40%."
+          },
+          {
+            "title": "Trace Viewer & Debugging",
+            "level": "advanced",
+            "badge": "advanced",
+            "keywords": "trace viewer debug screenshot video record on failure CI",
+            "definition": "Playwright has built-in trace recording — captures every action with DOM snapshot, network activity, console logs, and screenshots. Replayed in a visual viewer.",
+            "code": "# Enable tracing in conftest.py\n@pytest.fixture(scope=\"function\")\ndef page(browser):\n    context = browser.new_context()\n    context.tracing.start(\n        screenshots=True,\n        snapshots=True,\n        sources=True\n    )\n    page = context.new_page()\n    yield page\n    # Save trace on test failure\n    context.tracing.stop(path=\"trace.zip\")\n    context.close()\n\n# playwright.config (pytest.ini or pyproject.toml)\n# [tool.pytest.ini_options]\n# addopts = \"--tracing=retain-on-failure\"\n\n# Open trace in browser\n# playwright show-trace trace.zip",
+            "tip": "In CI, use --tracing=retain-on-failure so traces are only saved when tests fail. The trace viewer shows you exactly what the page looked like at every step — no more 'it works on my machine' debugging."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "selenium",
+    "subject": "Selenium WebDriver",
+    "icon": "🔬",
+    "color": "#185fa5",
+    "description": "Selenium architecture, waits, POM, and real-world patterns",
+    "sections": [
+      {
+        "label": "Architecture",
+        "topics": [
+          {
+            "title": "How Selenium Works",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "selenium webdriver architecture HTTP W3C chromedriver geckodriver browser driver protocol",
+            "definition": "Selenium communicates via HTTP — each command is a separate HTTP request to a driver (chromedriver/geckodriver) which then controls the browser. Three-layer chain.",
+            "code": "# Layer stack\n# Your test\n#   ↕ HTTP (W3C WebDriver protocol)\n# Driver (chromedriver / geckodriver)\n#   ↕ Native browser API\n# Browser (Chrome / Firefox / Edge)\n\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\n# Setup (Selenium 4+ auto-manages driver)\ndriver = webdriver.Chrome()\ndriver.get(\"https://example.com/login\")\n\n# You manage waits manually — no auto-wait\nwait = WebDriverWait(driver, 10)\nbtn  = wait.until(EC.element_to_be_clickable(\n           (By.ID, \"login-btn\")\n       ))\nbtn.click()\n\ndriver.quit()",
+            "tip": "Every command in Selenium = one HTTP round trip. This is why Selenium is slower than Playwright. Always use WebDriverWait with Expected Conditions — never Thread.sleep()."
+          },
+          {
+            "title": "Locators & StaleElement",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "locator By ID CSS XPath name class stale element reference exception re-find",
+            "definition": "Selenium find_element() queries DOM immediately and returns an element object. If DOM changes before you use it, you get StaleElementReferenceException.",
+            "code": "from selenium.webdriver.common.by import By\n\n# Locator strategies\ndriver.find_element(By.ID,           \"username\")\ndriver.find_element(By.CSS_SELECTOR, \"#username\")\ndriver.find_element(By.XPATH,        \"//input[@id='username']\")\ndriver.find_element(By.NAME,         \"username\")\ndriver.find_element(By.CLASS_NAME,   \"input-field\")\ndriver.find_element(By.LINK_TEXT,    \"Forgot password?\")\n\n# Find multiple\nelements = driver.find_elements(By.CSS_SELECTOR, \".item\")\n\n# StaleElementReferenceException fix — re-find after DOM change\ndef safe_click(driver, locator):\n    for _ in range(3):\n        try:\n            driver.find_element(*locator).click()\n            return\n        except StaleElementReferenceException:\n            time.sleep(0.5)\n\n# Page Object with @FindBy (cleaner approach)\nclass LoginPage:\n    USERNAME = (By.ID, \"username\")\n    PASSWORD = (By.ID, \"password\")\n\n    def login(self, u, p):\n        self.driver.find_element(*self.USERNAME).send_keys(u)",
+            "tip": "StaleElementReferenceException means the element was found, then the DOM refreshed (React re-render, SPA navigation). You must re-find the element. Store locator tuples in POM, not WebElement objects."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "appium",
+    "subject": "Appium",
+    "icon": "📱",
+    "color": "#4caf82",
+    "description": "Appium architecture for Android and iOS mobile testing",
+    "sections": [
+      {
+        "label": "Architecture",
+        "topics": [
+          {
+            "title": "How Appium Works",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "appium architecture server UIAutomator2 XCUITest Android iOS HTTP WebDriver protocol mobile",
+            "definition": "Appium is a mobile automation server. Your test sends HTTP commands to the Appium Server, which translates them into native platform automation — UIAutomator2 for Android, XCUITest for iOS.",
+            "code": "# Layer stack\n# Your test (Python / Java / any language)\n#   ↕ HTTP (WebDriver protocol)\n# Appium Server (Node.js process on port 4723)\n#   ↕ Platform driver\n# UIAutomator2 (Android) / XCUITest (iOS)\n#   ↕\n# Real device / Emulator / Simulator\n\nfrom appium import webdriver\nfrom appium.options import AndroidOptions\n\noptions = AndroidOptions()\noptions.platform_name       = \"Android\"\noptions.device_name         = \"emulator-5554\"\noptions.app_package         = \"com.example.app\"\noptions.app_activity        = \".MainActivity\"\noptions.automation_name     = \"UiAutomator2\"\n\ndriver = webdriver.Remote(\n    \"http://localhost:4723\",\n    options=options\n)\n\n# Mobile-specific actions\ndriver.find_element(AppiumBy.ACCESSIBILITY_ID, \"login\").click()\ndriver.swipe(500, 1500, 500, 500, 800)  # scroll up\ndriver.hide_keyboard()",
+            "tip": "Appium Server must be running before tests start. In CI, start Appium as a background process and add a health-check wait. Android emulator cold boot takes 60-120 seconds — keep it warm in CI using pre-booted snapshots."
+          },
+          {
+            "title": "Desired Capabilities",
+            "level": "basic",
+            "badge": "must know",
+            "keywords": "desired capabilities platform app package activity device UDID automation name options",
+            "definition": "Capabilities tell Appium which platform, device, app, and automation driver to use. Wrong capabilities = session creation fails with a cryptic error.",
+            "code": "# Android capabilities\nandroid_opts = {\n    \"platformName\":     \"Android\",\n    \"platformVersion\":  \"12\",\n    \"deviceName\":       \"emulator-5554\",\n    \"appPackage\":       \"com.example.myapp\",\n    \"appActivity\":      \".ui.MainActivity\",\n    \"automationName\":   \"UiAutomator2\",\n    \"noReset\":          True,    # don't reinstall app\n    \"fullReset\":        False,\n}\n\n# iOS capabilities\nios_opts = {\n    \"platformName\":     \"iOS\",\n    \"platformVersion\":  \"16.0\",\n    \"deviceName\":       \"iPhone 14\",\n    \"udid\":             \"auto\",  # simulator UDID\n    \"app\":              \"/path/to/app.app\",\n    \"automationName\":   \"XCUITest\",\n    \"wdaLocalPort\":     8100,\n}\n\n# Get appPackage from adb (Android)\n# adb shell dumpsys window | grep -E 'mCurrentFocus'",
+            "tip": "Get the correct appPackage and appActivity using adb on a real device or emulator: adb shell dumpsys window | grep mCurrentFocus while the app is open. Wrong activity name is the #1 Appium setup failure."
+          }
+        ]
+      }
+    ]
+  }
+]

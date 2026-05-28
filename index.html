@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Learning Journal — Pooja Gobbur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0d10;
+  --surface:  #15151a;
+  --surface2: #1c1c23;
+  --surface3: #222229;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --text:     #e4e2dc;
+  --muted:    #7a7876;
+  --dimmed:   #555350;
+  --accent:   #c4b49e;
+  --mono: 'DM Mono', monospace;
+  --display: 'Fraunces', serif;
+  --sans: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── HERO ── */
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #7f77dd;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-eyebrow::before { content:''; width:18px; height:1px; background:#7f77dd; }
+h1 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 0.7rem;
+}
+h1 em { font-style: italic; color: var(--accent); }
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--muted);
+}
+.hero-meta a { color: #7f77dd; text-decoration: none; }
+.hero-meta a:hover { color: var(--accent); }
+.dot-live { width:6px; height:6px; border-radius:50%; background:#4caf82; display:inline-block; animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+/* ── LAYOUT ── */
+.layout {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 5rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky;
+  top: 1.5rem;
+}
+.sidebar-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dimmed);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.subject-nav { display: flex; flex-direction: column; gap: 3px; }
+.subj-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--muted);
+  transition: all 0.15s;
+  width: 100%;
+}
+.subj-btn:hover { background: var(--surface2); color: var(--text); }
+.subj-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+.subj-btn .subj-icon { font-size: 15px; flex-shrink: 0; }
+.subj-btn .subj-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dimmed);
+  background: var(--surface3);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.subj-btn.active .subj-count { color: var(--muted); }
+
+/* sidebar search */
+.search-box {
+  margin-bottom: 14px;
+  position: relative;
+}
+.search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 8px 32px 8px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: rgba(127,119,221,0.4); }
+.search-input::placeholder { color: var(--dimmed); }
+.search-icon { position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--dimmed); font-size:13px; pointer-events:none; }
+
+/* ── MAIN CONTENT ── */
+.content { min-width: 0; }
+
+/* subject panel */
+.subject-panel { display: none; }
+.subject-panel.active { display: block; animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
+.subject-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.3rem;
+}
+.subject-icon { font-size: 24px; }
+.subject-title {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.subject-desc { font-size: 12.5px; color: var(--muted); margin-bottom: 1.5rem; }
+
+/* section label */
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dimmed);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 1.5rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── ACCORDION ── */
+.accordion { display: flex; flex-direction: column; gap: 5px; }
+
+.acc-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.acc-item:hover { border-color: var(--border2); }
+.acc-item.open  { border-color: rgba(127,119,221,0.3); }
+.acc-item.hidden { display: none; }
+
+.acc-hdr {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+.acc-hdr:hover { background: var(--surface2); }
+.acc-item.open .acc-hdr { background: var(--surface2); }
+
+.acc-level {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.level-basic        { background: #4caf82; }
+.level-intermediate { background: #d4a24c; }
+.level-advanced     { background: #d06060; }
+
+.acc-title { flex: 1; font-size: 13px; font-weight: 500; color: var(--text); }
+
+.acc-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+.badge-must    { background: rgba(127,119,221,0.12); color: #9d98d8; }
+.badge-core    { background: rgba(76,175,130,0.12);  color: #4aab8f; }
+.badge-useful  { background: rgba(212,162,76,0.12);  color: #c49635; }
+.badge-qa      { background: rgba(74,171,143,0.12);  color: #4aab8f; }
+.badge-adv     { background: rgba(208,96,96,0.12);   color: #c96060; }
+
+.acc-arrow { color: var(--dimmed); font-size: 11px; transition: transform 0.2s; flex-shrink:0; }
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+
+/* ── ACC BODY ── */
+.acc-body {
+  display: none;
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.acc-body.open { display: block; animation: slideDown 0.18s ease; }
+@keyframes slideDown { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+
+.def {
+  border-left: 2px solid #7f77dd;
+  padding: 9px 12px;
+  margin-bottom: 12px;
+  background: rgba(127,119,221,0.05);
+  border-radius: 0 6px 6px 0;
+  font-size: 12.5px;
+  color: #b0ada8;
+  line-height: 1.6;
+}
+.def strong { color: var(--text); font-weight: 500; }
+
+.code-wrap { position: relative; margin: 10px 0; }
+pre {
+  background: #0a0a0d;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: #bab8b0;
+  overflow-x: auto;
+  line-height: 1.65;
+  tab-size: 4;
+}
+.copy-btn {
+  position: absolute;
+  top: 7px; right: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:hover { color: var(--text); border-color: var(--border2); }
+.copy-btn.ok { color: #4caf82; border-color: rgba(76,175,130,0.3); }
+
+/* syntax */
+.kw { color: #8f88e8; }
+.st { color: #4aab8f; }
+.nm { color: #d4a24c; }
+.cm { color: #4a4845; font-style: italic; }
+.fn { color: #c09060; }
+.dec { color: #9d98d8; }
+
+.tip {
+  background: rgba(127,119,221,0.07);
+  border: 1px solid rgba(127,119,221,0.18);
+  border-radius: 8px;
+  padding: 9px 12px;
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: #9d98d8;
+  line-height: 1.55;
+}
+.tip strong { color: #b8b5e8; font-weight: 500; }
+
+.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 10px 0; }
+.mini-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 11px;
+  font-size: 12px;
+  color: #888480;
+  line-height: 1.5;
+}
+.mini-card strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 3px; }
+.mini-card code { font-family: var(--mono); font-size: 11px; color: #4aab8f; }
+
+/* ── LEVEL LEGEND ── */
+.legend {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+/* ── EMPTY / LOADING ── */
+.empty {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--dimmed);
+  padding: 2.5rem 0;
+  text-align: center;
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.2rem 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dimmed);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+footer a { color: #7f77dd; text-decoration: none; }
+footer a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 660px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .subject-nav { flex-direction: row; flex-wrap: wrap; }
+  .subj-btn { width: auto; }
+  .hero, .layout, footer { padding-left: 1rem; padding-right: 1rem; }
+  .mini-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">QA Automation · Learning Journal</div>
+  <h1>Interview <em>Reference</em></h1>
+  <div class="hero-meta">
+    <span><span class="dot-live"></span> Pooja Gobbur</span>
+    <span>·</span>
+    <span>Senior QA Automation Engineer</span>
+    <span>·</span>
+    <a href="https://linkedin.com/in/pooja-gobbur-54006417a" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="search-box">
+      <input class="search-input" type="search" placeholder="Search all topics…" id="globalSearch" oninput="globalSearch(this.value)" aria-label="Search topics">
+      <span class="search-icon">⌕</span>
+    </div>
+    <div class="sidebar-label">Subjects</div>
+    <nav class="subject-nav" id="subjectNav" aria-label="Subject navigation"></nav>
+  </aside>
+
+  <!-- ── CONTENT ── -->
+  <main class="content" id="contentArea">
+    <div class="empty" id="loadingMsg">Loading topics…</div>
+  </main>
+</div>
+
+<footer>
+  <span>Edit <code>data/topics.json</code> to add topics · <a href="https://github.com" target="_blank">GitHub Pages</a></span>
+  <span>Pooja Gobbur · <a href="https://linkedin.com/in/pooja-gobbur-54006417a" target="_blank">linkedin.com/in/pooja-gobbur-54006417a</a></span>
+</footer>
+
+<script>
+// ─────────────────────────────────────────
+// Badge CSS class mapping
+// ─────────────────────────────────────────
+const BADGE_CLASS = {
+  'must know':    'badge-must',
+  'core':         'badge-core',
+  'useful':       'badge-useful',
+  'qa essential': 'badge-qa',
+  'advanced':     'badge-adv',
+};
+
+// ─────────────────────────────────────────
+// Load topics.json and build the page
+// ─────────────────────────────────────────
+let ALL_DATA = [];
+
+async function init() {
+  try {
+    const res  = await fetch('data/topics.json');
+    ALL_DATA   = await res.json();
+    buildSidebar(ALL_DATA);
+    buildContent(ALL_DATA);
+    // activate first subject
+    const firstBtn = document.querySelector('.subj-btn');
+    if (firstBtn) activateSubject(ALL_DATA[0].id, firstBtn);
+  } catch (e) {
+    document.getElementById('loadingMsg').textContent =
+      '⚠️  Could not load topics.json — make sure you are running from a local server or GitHub Pages.';
+    console.error(e);
+  }
+}
+
+// ─────────────────────────────────────────
+// Build sidebar subject buttons
+// ─────────────────────────────────────────
+function buildSidebar(data) {
+  const nav = document.getElementById('subjectNav');
+  nav.innerHTML = '';
+  data.forEach(subj => {
+    const total = subj.sections.reduce((n, s) => n + s.topics.length, 0);
+    const btn   = document.createElement('button');
+    btn.className    = 'subj-btn';
+    btn.dataset.id   = subj.id;
+    btn.setAttribute('aria-label', subj.subject);
+    btn.innerHTML    = `
+      <span class="subj-icon">${subj.subject === 'Python' ? '🐍' :
+                               subj.subject === 'Playwright' ? '🎭' :
+                               subj.subject === 'Selenium WebDriver' ? '🔬' :
+                               subj.subject === 'Appium' ? '📱' :
+                               subj.icon || '📄'}</span>
+      <span>${subj.subject}</span>
+      <span class="subj-count">${total}</span>`;
+    btn.onclick = () => activateSubject(subj.id, btn);
+    nav.appendChild(btn);
+  });
+}
+
+// ─────────────────────────────────────────
+// Build all subject panels
+// ─────────────────────────────────────────
+function buildContent(data) {
+  const area = document.getElementById('contentArea');
+  area.innerHTML = '';
+  data.forEach(subj => {
+    const panel = document.createElement('div');
+    panel.className  = 'subject-panel';
+    panel.id         = `panel-${subj.id}`;
+
+    // count total topics
+    const total = subj.sections.reduce((n,s) => n + s.topics.length, 0);
+
+    let html = `
+      <div class="subject-header">
+        <span class="subject-icon">${subj.icon}</span>
+        <h2 class="subject-title">${subj.subject}</h2>
+      </div>
+      <p class="subject-desc">${subj.description} · <strong>${total} topics</strong></p>
+      <div class="legend">
+        <span class="legend-item"><span class="acc-level level-basic"></span>basic</span>
+        <span class="legend-item"><span class="acc-level level-intermediate"></span>intermediate</span>
+        <span class="legend-item"><span class="acc-level level-advanced"></span>advanced</span>
+      </div>`;
+
+    subj.sections.forEach(sec => {
+      html += `<div class="section-label">${sec.label}</div><div class="accordion">`;
+      sec.topics.forEach((topic, ti) => {
+        const uid        = `${subj.id}-${sec.label}-${ti}`.replace(/\s+/g,'-');
+        const badgeClass = BADGE_CLASS[topic.badge.toLowerCase()] || 'badge-core';
+        const levelClass = `level-${topic.level}`;
+        const keywords   = topic.keywords || '';
+
+        html += `
+          <div class="acc-item" data-keywords="${keywords.toLowerCase()}" data-title="${topic.title.toLowerCase()}" id="acc-${uid}">
+            <button class="acc-hdr" onclick="toggle(this)" aria-expanded="false" aria-controls="body-${uid}">
+              <span class="acc-level ${levelClass}" title="${topic.level}"></span>
+              <span class="acc-title">${topic.title}</span>
+              <span class="acc-badge ${badgeClass}">${topic.badge}</span>
+              <span class="acc-arrow">▾</span>
+            </button>
+            <div class="acc-body" id="body-${uid}" role="region">
+              ${topic.definition ? `<div class="def"><strong>Definition:</strong> ${topic.definition}</div>` : ''}
+              ${topic.code       ? `<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">copy</button><pre>${escapeHtml(topic.code)}</pre></div>` : ''}
+              ${topic.tip        ? `<div class="tip"><strong>Interview tip:</strong> ${topic.tip}</div>` : ''}
+            </div>
+          </div>`;
+      });
+      html += `</div>`;
+    });
+
+    panel.innerHTML = html;
+    area.appendChild(panel);
+  });
+}
+
+// ─────────────────────────────────────────
+// Activate a subject panel
+// ─────────────────────────────────────────
+function activateSubject(id, btn) {
+  document.querySelectorAll('.subject-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById(`panel-${id}`);
+  if (panel) panel.classList.add('active');
+  btn.classList.add('active');
+  // clear search
+  const searchInput = document.getElementById('globalSearch');
+  if (searchInput) { searchInput.value = ''; clearSearch(); }
+}
+
+// ─────────────────────────────────────────
+// Toggle accordion
+// ─────────────────────────────────────────
+function toggle(hdr) {
+  const item = hdr.closest('.acc-item');
+  const body = hdr.nextElementSibling;
+  const open = !item.classList.contains('open');
+  item.classList.toggle('open', open);
+  body.classList.toggle('open', open);
+  hdr.setAttribute('aria-expanded', String(open));
+}
+
+// ─────────────────────────────────────────
+// Copy code button
+// ─────────────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.nextElementSibling;
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = 'copied!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 1800);
+  });
+}
+
+// ─────────────────────────────────────────
+// Global search — searches across ALL panels
+// ─────────────────────────────────────────
+function globalSearch(q) {
+  const query = q.toLowerCase().trim();
+
+  if (!query) { clearSearch(); return; }
+
+  // show all panels while searching
+  document.querySelectorAll('.subject-panel').forEach(p => p.classList.add('active'));
+
+  let anyVisible = false;
+  document.querySelectorAll('.acc-item').forEach(item => {
+    const title    = item.dataset.title    || '';
+    const keywords = item.dataset.keywords || '';
+    const match    = title.includes(query) || keywords.includes(query);
+    item.classList.toggle('hidden', !match);
+    if (match) anyVisible = true;
+  });
+
+  // show/hide section labels based on visible items
+  document.querySelectorAll('.section-label').forEach(lbl => {
+    const nextAcc = lbl.nextElementSibling;
+    if (!nextAcc) return;
+    const hasVisible = [...nextAcc.querySelectorAll('.acc-item')].some(i => !i.classList.contains('hidden'));
+    lbl.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+function clearSearch() {
+  document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('hidden'));
+  document.querySelectorAll('.section-label').forEach(l => l.style.display = '');
+  // re-activate first subject only (remove multi-active state)
+  const activeBtn = document.querySelector('.subj-btn.active');
+  if (activeBtn) {
+    document.querySelectorAll('.subject-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById(`panel-${activeBtn.dataset.id}`);
+    if (panel) panel.classList.add('active');
+  }
+}
+
+// ─────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // syntax highlighting
+    .replace(/(#[^\n]*)/g, '<span class="cm">$1</span>')
+    .replace(/\b(def|class|import|from|return|if|elif|else|for|while|in|and|or|not|with|as|yield|raise|try|except|finally|True|False|None|print|lambda|pass)\b/g, '<span class="kw">$1</span>')
+    .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="st">$&</span>')
+    .replace(/\b(\d+)\b(?![^<]*>)/g, '<span class="nm">$1</span>')
+    .replace(/\b([A-Z][a-zA-Z]+)\b(?![^<]*>)/g, '<span class="fn">$1</span>');
+}
+
+// ─────────────────────────────────────────
+// Boot
+// ─────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
