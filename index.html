@@ -444,7 +444,7 @@ let ALL_DATA = [];
 
 async function init() {
   try {
-    const res  = await fetch('data/topics.json');
+    const res  = await fetch('data.json');
     ALL_DATA   = await res.json();
     buildSidebar(ALL_DATA);
     buildContent(ALL_DATA);
