@@ -1,150 +1,150 @@
 [
-{
-"id": "variables",
-"title": "Variables",
-
-"enabledSections": [
-"concepts",
-"interviewQuestions",
-"scenarioQuestions",
-"codingQuestions",
-"realTimeExamples",
-"commonMistakes",
-"quickRevision"
-],
-
-"concepts": [
-{
-"title": "What is a Variable?",
-"content": "A variable is a named reference used to store data in memory. Variables allow programs to store, retrieve, and manipulate values during execution."
-},
-{
-"title": "Dynamic Typing",
-"content": "Python is dynamically typed. The type of a variable is determined automatically at runtime, and no explicit declaration is required."
-},
-{
-"title": "Variable Naming Rules",
-"content": "Variable names can contain letters, digits, and underscores. They cannot start with a digit and cannot use Python reserved keywords."
-},
-{
-"title": "Multiple Assignment",
-"content": "Python allows assigning multiple variables in a single statement."
-},
-{
-"title": "Memory Reference Concept",
-"content": "Variables do not store actual values directly. They reference objects stored in memory."
-}
-],
-
-"interviewQuestions": [
-{
-"question": "What is a variable in Python?",
-"answer": "A variable is a named reference that points to an object stored in memory."
-},
-{
-"question": "Is Python statically typed or dynamically typed?",
-"answer": "Python is dynamically typed because variable types are determined at runtime."
-},
-{
-"question": "How do you check the type of a variable?",
-"answer": "Using type() or isinstance()."
-},
-{
-"question": "What is the difference between type() and isinstance()?",
-"answer": "type() checks the exact type, whereas isinstance() also considers inheritance relationships."
-},
-{
-"question": "Can a variable change its type during execution?",
-"answer": "Yes. Python allows reassignment to objects of different types."
-}
-],
-
-"scenarioQuestions": [
-{
-"question": "You receive test data from an API and are unsure whether a field contains an integer or string. How would you validate it?",
-"answer": "Use isinstance() to verify the data type before processing."
-},
-{
-"question": "A Selenium framework stores browser names dynamically. Why are variables useful here?",
-"answer": "Variables allow values such as browser names, URLs, and credentials to be reused throughout the framework."
-},
-{
-"question": "During debugging, a variable unexpectedly changes type from integer to string. How would you identify the issue?",
-"answer": "Print the variable value and type at different execution points using type() or logging."
-}
-],
-
-"codingQuestions": [
-{
-"question": "Declare and print variables of different data types.",
-"difficulty": "Easy",
-"solution": "name='Pooja'; age=28; salary=50000.50; is_active=True",
-"explanation": "Demonstrates dynamic typing."
-},
-{
-"question": "Swap two variables without using a third variable.",
-"difficulty": "Easy",
-"solution": "a,b=b,a",
-"explanation": "Uses tuple unpacking."
-},
-{
-"question": "Find the type of a variable.",
-"difficulty": "Easy",
-"solution": "print(type(variable))",
-"explanation": "Returns the object's type."
-}
-],
-
-"realTimeExamples": [
-{
-"title": "Environment URL Storage",
-"description": "Frameworks store QA, UAT, and PROD URLs in variables."
-},
-{
-"title": "Test Data Management",
-"description": "Usernames, passwords, patient IDs, and order numbers are stored in variables."
-},
-{
-"title": "API Testing",
-"description": "Response values are stored in variables and reused across requests."
-},
-{
-"title": "Automation Framework Configuration",
-"description": "Browser type, execution mode, timeout values, and report paths are stored in variables."
-}
-],
-
-"commonMistakes": [
-{
-"mistake": "Using Python keywords as variable names.",
-"fix": "Avoid names such as class, def, if, else, while, etc."
-},
-{
-"mistake": "Creating unclear variable names.",
-"fix": "Use meaningful names such as patient_id instead of p."
-},
-{
-"mistake": "Using type() everywhere.",
-"fix": "Prefer isinstance() for type validation because it supports inheritance."
-},
-{
-"mistake": "Confusing = and ==",
-"fix": "= assigns values while == compares values."
-}
-],
-
-"quickRevision": [
-"Variables store references to objects",
-"Python is dynamically typed",
-"No explicit declaration required",
-"Use meaningful variable names",
-"Use isinstance() for type checking",
-"Variables can change type at runtime",
-"Multiple assignment is supported",
-"Tuple unpacking allows swapping variables"
-],
-
-"pdfs": []
-}
+  {
+  "id": "variables",
+  "title": "Variables",
+  
+  "enabledSections": [
+  "concepts",
+  "interviewQuestions",
+  "scenarioQuestions",
+  "codingQuestions",
+  "realTimeExamples",
+  "commonMistakes",
+  "quickRevision"
+  ],
+  
+  "concepts": [
+  {
+  "title": "What is a Variable?",
+  "content": "A variable is a named reference used to store data in memory. Variables allow programs to store, retrieve, and manipulate values during execution."
+  },
+  {
+  "title": "Dynamic Typing",
+  "content": "Python is dynamically typed. The type of a variable is determined automatically at runtime, and no explicit declaration is required."
+  },
+  {
+  "title": "Variable Naming Rules",
+  "content": "Variable names can contain letters, digits, and underscores. They cannot start with a digit and cannot use Python reserved keywords."
+  },
+  {
+  "title": "Multiple Assignment",
+  "content": "Python allows assigning multiple variables in a single statement."
+  },
+  {
+  "title": "Memory Reference Concept",
+  "content": "Variables do not store actual values directly. They reference objects stored in memory."
+  }
+  ],
+  
+  "interviewQuestions": [
+  {
+  "question": "What is a variable in Python?",
+  "answer": "A variable is a named reference that points to an object stored in memory."
+  },
+  {
+  "question": "Is Python statically typed or dynamically typed?",
+  "answer": "Python is dynamically typed because variable types are determined at runtime."
+  },
+  {
+  "question": "How do you check the type of a variable?",
+  "answer": "Using type() or isinstance()."
+  },
+  {
+  "question": "What is the difference between type() and isinstance()?",
+  "answer": "type() checks the exact type, whereas isinstance() also considers inheritance relationships."
+  },
+  {
+  "question": "Can a variable change its type during execution?",
+  "answer": "Yes. Python allows reassignment to objects of different types."
+  }
+  ],
+  
+  "scenarioQuestions": [
+  {
+  "question": "You receive test data from an API and are unsure whether a field contains an integer or string. How would you validate it?",
+  "answer": "Use isinstance() to verify the data type before processing."
+  },
+  {
+  "question": "A Selenium framework stores browser names dynamically. Why are variables useful here?",
+  "answer": "Variables allow values such as browser names, URLs, and credentials to be reused throughout the framework."
+  },
+  {
+  "question": "During debugging, a variable unexpectedly changes type from integer to string. How would you identify the issue?",
+  "answer": "Print the variable value and type at different execution points using type() or logging."
+  }
+  ],
+  
+  "codingQuestions": [
+  {
+  "question": "Declare and print variables of different data types.",
+  "difficulty": "Easy",
+  "solution": "name='Pooja'; age=28; salary=50000.50; is_active=True",
+  "explanation": "Demonstrates dynamic typing."
+  },
+  {
+  "question": "Swap two variables without using a third variable.",
+  "difficulty": "Easy",
+  "solution": "a,b=b,a",
+  "explanation": "Uses tuple unpacking."
+  },
+  {
+  "question": "Find the type of a variable.",
+  "difficulty": "Easy",
+  "solution": "print(type(variable))",
+  "explanation": "Returns the object's type."
+  }
+  ],
+  
+  "realTimeExamples": [
+  {
+  "title": "Environment URL Storage",
+  "description": "Frameworks store QA, UAT, and PROD URLs in variables."
+  },
+  {
+  "title": "Test Data Management",
+  "description": "Usernames, passwords, patient IDs, and order numbers are stored in variables."
+  },
+  {
+  "title": "API Testing",
+  "description": "Response values are stored in variables and reused across requests."
+  },
+  {
+  "title": "Automation Framework Configuration",
+  "description": "Browser type, execution mode, timeout values, and report paths are stored in variables."
+  }
+  ],
+  
+  "commonMistakes": [
+  {
+  "mistake": "Using Python keywords as variable names.",
+  "fix": "Avoid names such as class, def, if, else, while, etc."
+  },
+  {
+  "mistake": "Creating unclear variable names.",
+  "fix": "Use meaningful names such as patient_id instead of p."
+  },
+  {
+  "mistake": "Using type() everywhere.",
+  "fix": "Prefer isinstance() for type validation because it supports inheritance."
+  },
+  {
+  "mistake": "Confusing = and ==",
+  "fix": "= assigns values while == compares values."
+  }
+  ],
+  
+  "quickRevision": [
+  "Variables store references to objects",
+  "Python is dynamically typed",
+  "No explicit declaration required",
+  "Use meaningful variable names",
+  "Use isinstance() for type checking",
+  "Variables can change type at runtime",
+  "Multiple assignment is supported",
+  "Tuple unpacking allows swapping variables"
+  ],
+  
+  "pdfs": []
+  }
 ]
 
