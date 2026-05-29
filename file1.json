@@ -1,0 +1,51 @@
+{
+  "subject": "Python",
+  "sections": [
+    {
+      "id": "01-basics",
+      "title": "01. Basics",
+      "topics": [
+        {
+          "id": "introduction",
+          "title": "Introduction",
+          "enabledSections": [
+            "concepts",
+            "interviewQuestions",
+            "scenarioQuestions",
+            "realTimeExamples",
+            "commonMistakes",
+            "quickRevision"
+          ]
+        },
+
+        {
+          "id": "variables",
+          "title": "Variables",
+          "enabledSections": [
+            "concepts",
+            "interviewQuestions",
+            "scenarioQuestions",
+            "codingQuestions",
+            "realTimeExamples",
+            "commonMistakes",
+            "quickRevision"
+          ]
+        },
+
+        {
+          "id": "data-types",
+          "title": "Data Types",
+          "enabledSections": [
+            "concepts",
+            "interviewQuestions",
+            "scenarioQuestions",
+            "codingQuestions",
+            "realTimeExamples",
+            "commonMistakes",
+            "quickRevision"
+          ]
+        }
+      ]
+    }
+  ]
+}
